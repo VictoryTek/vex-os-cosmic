@@ -1,43 +1,127 @@
-# BlueBuild Template &nbsp; [![bluebuild build badge](https://github.com/blue-build/template/actions/workflows/build.yml/badge.svg)](https://github.com/blue-build/template/actions/workflows/build.yml)
+<p align="center">
+	<img src="files/system/usr/share/pixmaps/vex.png" alt="VexOS Logo" width="200" />
+</p>
 
-See the [BlueBuild docs](https://blue-build.org/how-to/setup/) for quick setup instructions for setting up your own repository based on this template.
+# [![bluebuild build badge](https://github.com/VictoryTek/vex-os/actions/workflows/build.yml/badge.svg)](https://github.com/VictoryTek/vex-os/actions/workflows/build.yml)
 
-After setup, it is recommended you update this README to describe your custom image.
+Custom Fedora Atomic (ostree native container) image built with [BlueBuild](https://blue-build.org), based on the Bazzite GNOME variants and personalized with tooling, Flatpaks, GNOME extensions, theming, and wallpapers.
 
-## Installation
+## Screenshots
+<p align="center">
+	<a href="./vex-screenshot1.jpg" title="Desktop Light"><img src="./vex-screenshot1.jpg" alt="Vex OS desktop screenshot (light)" width="48%"/></a>
+	<a href="./vex-screenshot2.jpg" title="Desktop Dark"><img src="./vex-screenshot2.jpg" alt="Vex OS desktop screenshot (dark)" width="48%"/></a>
+</p>
 
-> [!WARNING]  
-> [This is an experimental feature](https://www.fedoraproject.org/wiki/Changes/OstreeNativeContainerStable), try at your own discretion.
+## Variants
+- `vex-os` (standard GNOME DE)
+- `vex-os-nvidia` (standard GNOME DE includes NVIDIA stack)
+- `vex-os-cosmic` (standard COSMIC DE)
+- `vex-os-cosmic-nvidia` (standard COSMIC DE includes NVIDIA stack)
 
-To rebase an existing atomic Fedora installation to the latest build:
 
-- First rebase to the unsigned image, to get the proper signing keys and policies installed:
-  ```
-  rpm-ostree rebase ostree-unverified-registry:ghcr.io/blue-build/template:latest
-  ```
-- Reboot to complete the rebase:
-  ```
-  systemctl reboot
-  ```
-- Then rebase to the signed image, like so:
-  ```
-  rpm-ostree rebase ostree-image-signed:docker://ghcr.io/blue-build/template:latest
-  ```
-- Reboot again to complete the installation
-  ```
-  systemctl reboot
-  ```
+## Features (short list)
+- Gnome DE (I dont like KDE) (maybe Cosmic in the future)
+- Developer + container tools (Docker, buildah, skopeo, virtualization group)
+- VS Code, Ghostty, Starship
+- Curated Flatpaks (Brave, LibreWolf, Bitwarden, etc.)
+- GNOME extensions (Dash to Dock, Wallpaper Slideshow, more)
+- Branded wallpapers with light/dark pairing & defaults
+- Signed images (cosign)
 
-The `latest` tag will automatically point to the latest build. That build will still always use the Fedora version specified in `recipe.yml`, so you won't get accidentally updated to the next major version.
+## Rebase / Install
+> Uses the [experimental native container](https://www.fedoraproject.org/wiki/Changes/OstreeNativeContainerStable) flow.
 
-## ISO
+Pick ONE variant and substitute below.
 
-If build on Fedora Atomic, you can generate an offline ISO with the instructions available [here](https://blue-build.org/learn/universal-blue/#fresh-install-from-an-iso). These ISOs cannot unfortunately be distributed on GitHub for free due to large sizes, so for public projects something else has to be used for hosting.
-
-## Verification
-
-These images are signed with [Sigstore](https://www.sigstore.dev/)'s [cosign](https://github.com/sigstore/cosign). You can verify the signature by downloading the `cosign.pub` file from this repo and running the following command:
-
-```bash
-cosign verify --key cosign.pub ghcr.io/blue-build/template
+1. Rebase first to the UNSIGNED image (installs trust policy + keys inside the image):
 ```
+# GNOME variant
+sudo rpm-ostree rebase ostree-unverified-registry:ghcr.io/victorytek/vex-os:latest
+
+# GNOME + NVIDIA
+sudo rpm-ostree rebase ostree-unverified-registry:ghcr.io/victorytek/vex-os-nvidia:latest
+
+# COSMIC DE variant  
+sudo rpm-ostree rebase ostree-unverified-registry:ghcr.io/victorytek/vex-os-cosmic:latest
+
+# COSMIC DE + NVIDIA
+sudo rpm-ostree rebase ostree-unverified-registry:ghcr.io/victorytek/vex-os-cosmic-nvidia:latest
+```
+
+2. Reboot:
+```
+systemctl reboot
+```
+
+3. Rebase to the SIGNED image:
+```
+# GNOME variant
+sudo rpm-ostree rebase ostree-image-signed:docker://ghcr.io/victorytek/vex-os:latest
+
+# GNOME + NVIDIA
+sudo rpm-ostree rebase ostree-image-signed:docker://ghcr.io/victorytek/vex-os-nvidia:latest
+
+# COSMIC DE variant
+sudo rpm-ostree rebase ostree-image-signed:docker://ghcr.io/victorytek/vex-os-cosmic:latest
+
+# COSMIC DE + NVIDIA  
+sudo rpm-ostree rebase ostree-image-signed:docker://ghcr.io/victorytek/vex-os-cosmic-nvidia:latest
+```
+
+4. Reboot again:
+```
+systemctl reboot
+```
+
+### Testing Variant (Optional)
+To rebase to the test variant for development/testing purposes:
+
+1. Rebase to UNSIGNED test image:
+```
+sudo rpm-ostree rebase ostree-unverified-registry:ghcr.io/victorytek/vex-os-test:latest
+```
+
+2. Reboot:
+```
+systemctl reboot
+```
+
+3. Rebase to SIGNED test image:
+```
+sudo rpm-ostree rebase ostree-image-signed:docker://ghcr.io/victorytek/vex-os-test:latest
+```
+
+4. Reboot again:
+```
+systemctl reboot
+```
+
+The `latest` tag tracks the newest build, but the Fedora release stays fixed to what the recipe specifies until manually changed.
+
+## Updating
+Stay on the same variant:
+```
+sudo rpm-ostree upgrade
+```
+Or explicitly rebase again (helpful if you changed channels):
+```
+sudo rpm-ostree rebase ostree-image-signed:docker://ghcr.io/victorytek/vex-os:latest
+```
+
+## Verification (Supply Chain)
+Images are signed with [cosign](https://github.com/sigstore/cosign). Verify (example for NVIDIA):
+```
+cosign verify --key cosign.pub ghcr.io/victorytek/vex-os-gnome-nvidia:latest
+```
+Expect a successful signature from the maintained key in `cosign.pub`.
+
+## ISO (Optional)
+If you want an installable ISO, follow the upstream guide: https://blue-build.org/learn/universal-blue/#fresh-install-from-an-iso (hosting large ISOs isn’t included here).
+
+## Changelog
+Upstream base changes (Bazzite) can be tracked here: [Changelog](https://github.com/ublue-os/bazzite/blob/main/CHANGELOG.md)
+
+## Credits
+Built on the BlueBuild ecosystem and ublue-os Bazzite base. 
+
+---
