@@ -24,13 +24,13 @@ modules:
   
   - type: os-release
     properties:
-      ID: vex-os-cosmic
-      ID_LIKE: fedora
-#      NAME: VexOS Cosmic
+#      ID: vex-os-cosmic
+#      ID_LIKE: fedora
+      NAME: VexOS Cosmic
       PRETTY_NAME: VexOS Cosmic
-      HOME_URL: "https://github.com/VictoryTek/vex-os"
-      BUG_REPORT_URL: "https://github.com/VictoryTek/vex-os/issues"
-      DEFAULT_HOSTNAME: vex-os-cosmic
+#      HOME_URL: "https://github.com/VictoryTek/vex-os"
+#      BUG_REPORT_URL: "https://github.com/VictoryTek/vex-os/issues"
+#      DEFAULT_HOSTNAME: vex-os-cosmic
 
   - type: initramfs
   - type: signing # this sets up the proper policy & signing files for signed images to work fully

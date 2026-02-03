@@ -22,15 +22,15 @@ modules:
   - from-file: module-recipes/core/wallpapers.yml
   - from-file: module-recipes/core/bling.yml
   
-  - type: os-release
-    properties:
-      ID: vex-os-cosmic-nvidia
-      ID_LIKE: fedora
+#  - type: os-release
+#    properties:
+#      ID: vex-os-cosmic-nvidia
+#      ID_LIKE: fedora
 #      NAME: VexOS Cosmic Nvidia
-      PRETTY_NAME: VexOS Cosmic Nvidia
-      HOME_URL: "https://github.com/VictoryTek/vex-os"
-      BUG_REPORT_URL: "https://github.com/VictoryTek/vex-os/issues"
-      DEFAULT_HOSTNAME: vex-os-cosmic
+#      PRETTY_NAME: VexOS Cosmic Nvidia
+#      HOME_URL: "https://github.com/VictoryTek/vex-os"
+#      BUG_REPORT_URL: "https://github.com/VictoryTek/vex-os/issues"
+#      DEFAULT_HOSTNAME: vex-os-cosmic
 
   - type: initramfs
   - type: signing # this sets up the proper policy & signing files for signed images to work fully
