@@ -26,7 +26,7 @@ modules:
     properties:
       ID: vex-os-cosmic-nvidia
       ID_LIKE: fedora
-      NAME: VexOS Cosmic Nvidia
+#      NAME: VexOS Cosmic Nvidia
       PRETTY_NAME: VexOS Cosmic Nvidia
       HOME_URL: "https://github.com/VictoryTek/vex-os"
       BUG_REPORT_URL: "https://github.com/VictoryTek/vex-os/issues"
